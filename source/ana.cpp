@@ -337,35 +337,119 @@ void ana::WWZ_makehist(TString channel_name){
    makehist(channel_name+"_elec_qual_eta_more_1p3",true,3,0,3);
    makehist(channel_name+"_muon_qual_eta_less_1p3",true,3,0,3);
    makehist(channel_name+"_muon_qual_eta_more_1p3",true,3,0,3);
+   makehist(channel_name+"_W_elec_qual_eta_less_1p3",true,3,0,3);
+   makehist(channel_name+"_W_elec_qual_eta_more_1p3",true,3,0,3);
+   makehist(channel_name+"_W_muon_qual_eta_less_1p3",true,3,0,3);
+   makehist(channel_name+"_W_muon_qual_eta_more_1p3",true,3,0,3);
+   makehist(channel_name+"_Z_elec_qual_eta_less_1p3",true,3,0,3);
+   makehist(channel_name+"_Z_elec_qual_eta_more_1p3",true,3,0,3);
+   makehist(channel_name+"_Z_muon_qual_eta_less_1p3",true,3,0,3);
+   makehist(channel_name+"_Z_muon_qual_eta_more_1p3",true,3,0,3);
+   makehist(channel_name+"_Z_type",true,4,0,4);
+   makehist(channel_name+"_W_type",true,4,0,4);
+   makehist(channel_name+"_W_type_1",true,2,0,2);
+   makehist(channel_name+"_W_type_2",true,2,0,2);
 
 
 }
 void ana::WWZ_fillhist(TString channel_name, float fill_wgt){
-//fill electron quality eta cut histogram
-   //cout << v_e_tlv->size() << endl;
-   for (int i=0; i < v_e_tlv->size(); ++i) {
-      // do not consider it temporarily
-      if (v_e_fwd->at(i)){
-         continue;
-      } else if (v_e_tlv->at(i).Eta() > 1.3 || v_e_tlv->at(i).Eta() < -1.3 ) {
-         makehist(channel_name+"_elec_qual_eta_more_1p3")->Fill(v_e_qual.at(i), fill_wgt);
+   //fill electron quality eta cut histogram
+   int x = 0;
+   //Z
+   if (v_l_pid[v_Z_pair[0].first] == 11 || v_l_pid[v_Z_pair[0].first] == -11) {
+      if (v_l_pid[v_Z_pair[0].second] == 11 || v_l_pid[v_Z_pair[0].second] == -11) {
+         makehist(channel_name+"_Z_type")->Fill(x, fill_wgt);
       } else {
-         makehist(channel_name+"_elec_qual_eta_less_1p3")->Fill(v_e_qual.at(i), fill_wgt);
+         makehist(channel_name+"_Z_type")->Fill(1, fill_wgt);
       }
-   }
-
-   for (int i=0; i < v_m_tlv->size(); ++i) {
-      // do not consider it temporarily
-      if (v_m_lowpt->at(i)){
-         continue;
-      } else if (v_m_tlv->at(i).Eta() > 1.3 || v_m_tlv->at(i).Eta() < -1.3 ) {
-         makehist(channel_name+"_muon_qual_eta_more_1p3")->Fill(v_m_qual.at(i), fill_wgt);
+   } else {
+      if (v_l_pid[v_Z_pair[0].second] == 11 || v_l_pid[v_Z_pair[0].second] == -11) {
+         makehist(channel_name+"_Z_type")->Fill(2, fill_wgt);
       } else {
-         makehist(channel_name+"_muon_qual_eta_less_1p3")->Fill(v_m_qual.at(i), fill_wgt);
+         makehist(channel_name+"_Z_type")->Fill(3, fill_wgt);
       }
    }
 
 
+   //W
+   if (v_l_pid[W_id[0]] == 11 || v_l_pid[W_id[0]] == -11) {
+      makehist(channel_name+"_W_type_1")->Fill(x, fill_wgt);
+      if (v_l_pid[W_id[1]] == 11 || v_l_pid[W_id[1]] == -11) {
+         makehist(channel_name+"_W_type")->Fill(x, fill_wgt);
+         makehist(channel_name+"_W_type_2")->Fill(x, fill_wgt);
+      } else {
+         makehist(channel_name+"_W_type")->Fill(1, fill_wgt);
+         makehist(channel_name+"_W_type_2")->Fill(1, fill_wgt);
+      }
+   } else {
+      makehist(channel_name+"_W_type_1")->Fill(1, fill_wgt);
+      if (v_l_pid[W_id[1]] == 11 || v_l_pid[W_id[1]] == -11) {
+         makehist(channel_name+"_W_type")->Fill(2, fill_wgt);
+         makehist(channel_name+"_W_type_2")->Fill(x, fill_wgt);
+      } else {
+         makehist(channel_name+"_W_type")->Fill(3, fill_wgt);
+         makehist(channel_name+"_W_type_2")->Fill(1, fill_wgt);
+      }
+   }
+
+   //8-17-2021
+   /**
+   //first Z
+   if (v_l_tlv[v_Z_pair[0].first].Eta() > 1.3 || v_l_tlv[v_Z_pair[0].first].Eta() < -1.3) {
+      if (v_l_pid[v_Z_pair[0].first] == 11 || v_l_pid[v_Z_pair[0].first] == -11) {
+         makehist(channel_name+"_Z_elec_qual_eta_more_1p3")->Fill(v_l_qual[v_Z_pair[0].first], fill_wgt);
+      } else {
+         makehist(channel_name+"_Z_muon_qual_eta_more_1p3")->Fill(v_l_qual[v_Z_pair[0].first], fill_wgt);
+      }
+   } else {
+      if (v_l_pid[v_Z_pair[0].first] == 11 || v_l_pid[v_Z_pair[0].first] == -11) {
+         makehist(channel_name+"_Z_elec_qual_eta_less_1p3")->Fill(v_l_qual[v_Z_pair[0].first], fill_wgt);
+      } else {
+         makehist(channel_name+"_Z_muon_qual_eta_less_1p3")->Fill(v_l_qual[v_Z_pair[0].first], fill_wgt);
+      }
+   }
+   //second Z
+   if (v_l_tlv[v_Z_pair[0].second].Eta() > 1.3 || v_l_tlv[v_Z_pair[0].second].Eta() < -1.3) {
+      if (v_l_pid[v_Z_pair[0].second] == 11 || v_l_pid[v_Z_pair[0].second] == -11) {
+         makehist(channel_name+"_Z_elec_qual_eta_more_1p3")->Fill(v_l_qual[v_Z_pair[0].second], fill_wgt);
+      } else {
+         makehist(channel_name+"_Z_muon_qual_eta_more_1p3")->Fill(v_l_qual[v_Z_pair[0].second], fill_wgt);
+      }
+   } else {
+      if (v_l_pid[v_Z_pair[0].second] == 11 || v_l_pid[v_Z_pair[0].second] == -11) {
+         makehist(channel_name+"_Z_elec_qual_eta_less_1p3")->Fill(v_l_qual[v_Z_pair[0].second], fill_wgt);
+      } else {
+         makehist(channel_name+"_Z_muon_qual_eta_less_1p3")->Fill(v_l_qual[v_Z_pair[0].second], fill_wgt);
+      }
+   }
+   //first W
+   if (v_l_tlv[W_id[0]].Eta() > 1.3 || v_l_tlv[W_id[0]].Eta() < -1.3) {
+      if (v_l_pid[W_id[0]] == 11 || v_l_pid[W_id[0]] == -11) {
+         makehist(channel_name+"_W_elec_qual_eta_more_1p3")->Fill(v_l_qual[W_id[0]], fill_wgt);
+      } else {
+         makehist(channel_name+"_W_muon_qual_eta_more_1p3")->Fill(v_l_qual[W_id[0]], fill_wgt);
+      }
+   } else {
+      if (v_l_pid[W_id[0]] == 11 || v_l_pid[W_id[0]] == -11) {
+         makehist(channel_name+"_W_elec_qual_eta_less_1p3")->Fill(v_l_qual[W_id[0]], fill_wgt);
+      } else {
+         makehist(channel_name+"_W_muon_qual_eta_less_1p3")->Fill(v_l_qual[W_id[0]], fill_wgt);
+      }
+   }
+   //second W
+   if (v_l_tlv[W_id[1]].Eta() > 1.3 || v_l_tlv[W_id[1]].Eta() < -1.3) {
+      if (v_l_pid[W_id[1]] == 11 || v_l_pid[W_id[1]] == -11) {
+         makehist(channel_name+"_W_elec_qual_eta_more_1p3")->Fill(v_l_qual[W_id[1]], fill_wgt);
+      } else {
+         makehist(channel_name+"_W_muon_qual_eta_more_1p3")->Fill(v_l_qual[W_id[1]], fill_wgt);
+      }
+   } else {
+      if (v_l_pid[W_id[1]] == 11 || v_l_pid[W_id[1]] == -11) {
+         makehist(channel_name+"_W_elec_qual_eta_less_1p3")->Fill(v_l_qual[W_id[1]], fill_wgt);
+      } else {
+         makehist(channel_name+"_W_muon_qual_eta_less_1p3")->Fill(v_l_qual[W_id[1]], fill_wgt);
+      }
+   }**/
 }
 float ana::deltaphi(TLorentzVector tlv1, TLorentzVector tlv2){
    float dphi = abs(tlv1.Phi()-tlv2.Phi());
@@ -427,11 +511,14 @@ void ana::Loop_initialize()
       v_l_pid.push_back(v_e_pid->at(i));
       v_l_wgt.push_back(v_e_wgtLoose->at(i));
       if (v_e_LHTight->at(i)) {
-         v_e_qual.push_back(2);
+         //v_e_qual.push_back(2);
+         v_l_qual.push_back(2);
       } else if (v_e_LHMedium->at(i)) {
-         v_e_qual.push_back(1);
+         //v_e_qual.push_back(1);
+         v_l_qual.push_back(1);
       } else {
-         v_e_qual.push_back(0);
+         //v_e_qual.push_back(0);
+         v_l_qual.push_back(0);
       }
    }
    for (int i=0; i < v_m_tlv->size(); ++i) {
@@ -441,11 +528,14 @@ void ana::Loop_initialize()
       v_l_pid.push_back(v_m_pid->at(i));
       v_l_wgt.push_back(v_m_wgtLoose->at(i));
       if (v_m_tight->at(i)) {
-         v_m_qual.push_back(2);
+         //v_m_qual.push_back(2);
+         v_l_qual.push_back(2);
       } else if (v_m_medium->at(i)) {
-         v_m_qual.push_back(1);
+         //v_m_qual.push_back(1);
+         v_l_qual.push_back(1);
       } else {
-         v_m_qual.push_back(0);
+         //v_m_qual.push_back(0);
+         v_l_qual.push_back(0);
       }
    }
    pt_sort(v_l_tlv,v_l_order);
@@ -455,6 +545,7 @@ void ana::Loop_initialize()
 void ana::Loop_terminate()
 {
    v_l_tlv.clear();
+   WWZ_tlv.clear();
    v_l_pid.clear();
    v_l_wgt.clear();
    v_l_order.clear();
@@ -464,9 +555,9 @@ void ana::Loop_terminate()
       v_ignore.clear();
       v_Z_wgt.clear();
    }
-   v_m_qual.clear();
-   v_e_qual.clear();
-
+   //v_m_qual.clear();
+   //v_e_qual.clear();
+   v_l_qual.clear();
 
 }
 

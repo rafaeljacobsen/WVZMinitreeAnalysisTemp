@@ -1,0 +1,14 @@
+test
+data
+run/cutflowinfo/*.txt
+run/cutflowinfo/*.csv
+run/run
+run/nohup.out
+plot/root/*.root
+plot/PDFs/*.png
+plot/PDFs/*.pdf
+build/*.o
+output/*
+*swp
+*pyc
+run/output.txt

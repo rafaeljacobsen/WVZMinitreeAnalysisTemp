@@ -31,6 +31,7 @@ class ana:public ana_base
       float                        b_wgt[4] ;//0--60 1--70 2--77 3--85
       float                        dR       ;
       vector<TLorentzVector>       v_l_tlv  ;
+      vector<TLorentzVector>       WWZ_tlv  ;
       vector<int>                  v_l_pid  ;
       vector<float>                v_l_wgt  ;
       vector<int>                  v_l_order;
@@ -38,8 +39,9 @@ class ana:public ana_base
       vector<float>                v_Z_wgt  ; // weight for Z leptons, related to v_Z_pair
       vector<pair<int,int> >       v_Z_pair ;
       vector<int>                  v_ignore ;
-      vector<int>		           v_m_qual ;
-      vector<int>                  v_e_qual ;
+      //vector<int>		           v_m_qual ;
+      //vector<int>                  v_e_qual ;
+      vector<int>                  v_l_qual ;
 
 
 
