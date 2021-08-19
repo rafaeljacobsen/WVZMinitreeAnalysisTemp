@@ -268,7 +268,9 @@ void ana::channel_makehist(TString channel_name, int nZ)
 {
     
    makehist(channel_name+"_m4l",true,100,0,1000);
+   
    if(nZ>3) return;
+   /**
    TString s_number[3]={"first","second","third"};
    for(int i=0;i<nZ;i++)
    {
@@ -285,11 +287,12 @@ void ana::channel_makehist(TString channel_name, int nZ)
    }
     makehist(channel_name+"_fwdele_pt", true, 200, 0, 400);
     makehist(channel_name+"_fwdele_eta", true,30,-3,3);
+
    for(int i=0;i<10;i++)
    {
       makehist(channel_name+"_jet_pt_"+TString::Format("%d",i+1),true);
       makehist(channel_name+"_jet_eta_"+TString::Format("%d",i+1),true,30,-3,3);
-   }
+   }**/
    
 }
 
@@ -300,6 +303,7 @@ void ana::channel_fillhist(TString channel_name, int nZ, float fill_wgt)
      std::cerr << "got 4 Z?" << std::endl;
      return;
    }
+   /**
    TString s_number[3]={"first","second","third"};
    TLorentzVector Z_tlv;
    int nlepton=v_l_tlv.size();
@@ -328,12 +332,12 @@ void ana::channel_fillhist(TString channel_name, int nZ, float fill_wgt)
    {
       makehist(channel_name+"_jet_pt_"+TString::Format("%d",i+1))->Fill((*v_j_tlv)[v_j_order[i]].Pt()/1000,fill_wgt);
       makehist(channel_name+"_jet_eta_"+TString::Format("%d",i+1))->Fill((*v_j_tlv)[v_j_order[i]].Eta(),fill_wgt);
-   }
+   }**/
 }
 
 void ana::WWZ_makehist(TString channel_name){
    //makes quality electron histos
-   makehist(channel_name+"_elec_qual_eta_less_1p3",true,3,0,3);
+   /**makehist(channel_name+"_elec_qual_eta_less_1p3",true,3,0,3);
    makehist(channel_name+"_elec_qual_eta_more_1p3",true,3,0,3);
    makehist(channel_name+"_muon_qual_eta_less_1p3",true,3,0,3);
    makehist(channel_name+"_muon_qual_eta_more_1p3",true,3,0,3);
@@ -344,16 +348,54 @@ void ana::WWZ_makehist(TString channel_name){
    makehist(channel_name+"_Z_elec_qual_eta_less_1p3",true,3,0,3);
    makehist(channel_name+"_Z_elec_qual_eta_more_1p3",true,3,0,3);
    makehist(channel_name+"_Z_muon_qual_eta_less_1p3",true,3,0,3);
-   makehist(channel_name+"_Z_muon_qual_eta_more_1p3",true,3,0,3);
-   makehist(channel_name+"_Z_type",true,4,0,4);
-   makehist(channel_name+"_W_type",true,4,0,4);
-   makehist(channel_name+"_W_type_1",true,2,0,2);
-   makehist(channel_name+"_W_type_2",true,2,0,2);
+   makehist(channel_name+"_Z_muon_qual_eta_more_1p3",true,3,0,3);**/
+   makehist(channel_name+"_Z_event_eta_more",true,3,0,3);
+   makehist(channel_name+"_W_event_eta_more",true,3,0,3);
+   makehist(channel_name+"_event_eta_more",true,6,0,6);
+   makehist(channel_name+"_event_tightness",true,12,0,4);
 
 
 }
 void ana::WWZ_fillhist(TString channel_name, float fill_wgt){
    //fill electron quality eta cut histogram
+   int Z_num_eta_more = 0;
+   int W_num_eta_more = 0;
+   vector<int> tightnessVect;
+   float tightness = 0.0;
+   //8-18-2021
+   if (v_l_tlv[v_Z_pair[0].first].Eta() > 1.3 || v_l_tlv[v_Z_pair[0].first].Eta() < -1.3) {
+      Z_num_eta_more += 1;
+   }
+   //second Z
+   if (v_l_tlv[v_Z_pair[0].second].Eta() > 1.3 || v_l_tlv[v_Z_pair[0].second].Eta() < -1.3) {
+      Z_num_eta_more += 1;
+   }
+   //first W
+   if (v_l_tlv[W_id[0]].Eta() > 1.3 || v_l_tlv[W_id[0]].Eta() < -1.3) {
+      W_num_eta_more += 1;
+   }
+   //second W
+   if (v_l_tlv[W_id[1]].Eta() > 1.3 || v_l_tlv[W_id[1]].Eta() < -1.3) {
+      W_num_eta_more += 1;
+   }
+
+   tightnessVect.push_back(v_l_qual[v_Z_pair[0].first]);
+   tightnessVect.push_back(v_l_qual[v_Z_pair[0].second]);
+   tightnessVect.push_back(v_l_qual[W_id[0]]);
+   tightnessVect.push_back(v_l_qual[W_id[1]]);
+
+   for(int i=0; i < tightnessVect.size(); ++i){
+      tightness += tightnessVect[i];
+   }
+   tightness = tightness/tightnessVect.size();
+   makehist(channel_name+"_Z_event_eta_more")->Fill(Z_num_eta_more, fill_wgt);
+   makehist(channel_name+"_W_event_eta_more")->Fill(W_num_eta_more, fill_wgt);
+   makehist(channel_name+"_event_eta_more")->Fill(W_num_eta_more+Z_num_eta_more, fill_wgt);
+   makehist(channel_name+"_event_tightness")->Fill(tightness, fill_wgt);
+
+
+   //8-17-2021
+   /**
    int x = 0;
    //Z
    if (v_l_pid[v_Z_pair[0].first] == 11 || v_l_pid[v_Z_pair[0].first] == -11) {
@@ -390,11 +432,12 @@ void ana::WWZ_fillhist(TString channel_name, float fill_wgt){
          makehist(channel_name+"_W_type")->Fill(3, fill_wgt);
          makehist(channel_name+"_W_type_2")->Fill(1, fill_wgt);
       }
-   }
+   }**/
 
    //8-17-2021
-   /**
+   
    //first Z
+   /**
    if (v_l_tlv[v_Z_pair[0].first].Eta() > 1.3 || v_l_tlv[v_Z_pair[0].first].Eta() < -1.3) {
       if (v_l_pid[v_Z_pair[0].first] == 11 || v_l_pid[v_Z_pair[0].first] == -11) {
          makehist(channel_name+"_Z_elec_qual_eta_more_1p3")->Fill(v_l_qual[v_Z_pair[0].first], fill_wgt);
