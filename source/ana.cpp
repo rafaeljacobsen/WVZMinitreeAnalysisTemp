@@ -267,7 +267,7 @@ TH2F* ana::makehist2d(TString s, bool ini, int xbin, float xstart, float xend, i
 void ana::channel_makehist(TString channel_name, int nZ)
 {
     
-   makehist(channel_name+"_m4l",true,100,0,1000);
+   //makehist(channel_name+"_m4l",true,100,0,1000);
    
    if(nZ>3) return;
    /**
@@ -351,6 +351,8 @@ void ana::WWZ_makehist(TString channel_name){
    makehist(channel_name+"_Z_muon_qual_eta_more_1p3",true,3,0,3);**/
    makehist(channel_name+"_Z_event_eta_more",true,3,0,3);
    makehist(channel_name+"_W_event_eta_more",true,3,0,3);
+   makehist(channel_name+"_elec_event_eta_more",true,3,0,3);
+   makehist(channel_name+"_muon_event_eta_more",true,3,0,3);
    makehist(channel_name+"_event_eta_more",true,6,0,6);
    makehist(channel_name+"_event_tightness",true,12,0,4);
 
@@ -358,25 +360,52 @@ void ana::WWZ_makehist(TString channel_name){
 }
 void ana::WWZ_fillhist(TString channel_name, float fill_wgt){
    //fill electron quality eta cut histogram
+   //initializes variables to be used to fill the histograms
    int Z_num_eta_more = 0;
    int W_num_eta_more = 0;
-   vector<int> tightnessVect;
+   int elec_num_eta_more = 0;
+   int muon_num_eta_more = 0;
+   vector<int> tightnessVect; //vector of the tightness levels of the leptons
    float tightness = 0.0;
    //8-18-2021
+   //first Z lep
    if (v_l_tlv[v_Z_pair[0].first].Eta() > 1.3 || v_l_tlv[v_Z_pair[0].first].Eta() < -1.3) {
       Z_num_eta_more += 1;
+      if (v_l_pid[v_Z_pair[0].first] == 11 || v_l_pid[v_Z_pair[0].first] == -11) {
+         elec_num_eta_more += 1;
+      } else {
+         muon_num_eta_more += 1;
+      }
+
    }
-   //second Z
+   //second Z lep
    if (v_l_tlv[v_Z_pair[0].second].Eta() > 1.3 || v_l_tlv[v_Z_pair[0].second].Eta() < -1.3) {
       Z_num_eta_more += 1;
+      if (v_l_pid[v_Z_pair[0].second] == 11 || v_l_pid[v_Z_pair[0].second] == -11) {
+         elec_num_eta_more += 1;
+      } else {
+         muon_num_eta_more += 1;
+      }
    }
+
    //first W
    if (v_l_tlv[W_id[0]].Eta() > 1.3 || v_l_tlv[W_id[0]].Eta() < -1.3) {
       W_num_eta_more += 1;
+      if (v_l_pid[W_id[0]] == 11 || v_l_pid[W_id[0]] == -11) {
+         elec_num_eta_more += 1;
+      } else {
+         muon_num_eta_more += 1;
+      }
    }
+
    //second W
    if (v_l_tlv[W_id[1]].Eta() > 1.3 || v_l_tlv[W_id[1]].Eta() < -1.3) {
       W_num_eta_more += 1;
+      if (v_l_pid[W_id[1]] == 11 || v_l_pid[W_id[1]] == -11) {
+         elec_num_eta_more += 1;
+      } else {
+         muon_num_eta_more += 1;
+      }
    }
 
    tightnessVect.push_back(v_l_qual[v_Z_pair[0].first]);
@@ -387,9 +416,12 @@ void ana::WWZ_fillhist(TString channel_name, float fill_wgt){
    for(int i=0; i < tightnessVect.size(); ++i){
       tightness += tightnessVect[i];
    }
-   tightness = tightness/tightnessVect.size();
+   tightness = tightness/tightnessVect.size(); //tightness is the average tightness level
    makehist(channel_name+"_Z_event_eta_more")->Fill(Z_num_eta_more, fill_wgt);
    makehist(channel_name+"_W_event_eta_more")->Fill(W_num_eta_more, fill_wgt);
+   makehist(channel_name+"_elec_event_eta_more")->Fill(elec_num_eta_more, fill_wgt);
+   makehist(channel_name+"_muon_event_eta_more")->Fill(muon_num_eta_more, fill_wgt);
+
    makehist(channel_name+"_event_eta_more")->Fill(W_num_eta_more+Z_num_eta_more, fill_wgt);
    makehist(channel_name+"_event_tightness")->Fill(tightness, fill_wgt);
 
@@ -685,10 +717,10 @@ void ana::Initialize()
       .regCut("WWZ_6l","",true)
       .regCut("WWZ_5l","",true)
       .regCut("WWZ_4l","",true)
-      .regCut("chargesum=0","",true)
-      .regCut("WWZ_SF_noZ","",true)
-      .regCut("WWZ_SF_inZ","",true)
-      .regCut("WWZ_em","",true);
+      .regCut("chargesum=0","",true);
+      //.regCut("WWZ_SF_noZ","",true)
+      //.regCut("WWZ_SF_inZ","",true)
+      //.regCut("WWZ_em","",true);
    // make your own hist
    makehist("Z_mass_first",true);
    makehist("Z_mass_second",true);
@@ -696,14 +728,14 @@ void ana::Initialize()
    channel_makehist("ZZZ",3);
    channel_makehist("WZZ",2);
    channel_makehist("WWZ",1);
-   channel_makehist("WWZ_SF_noZ",1);
-   channel_makehist("WWZ_SF_inZ",1);
-   channel_makehist("WWZ_em",1);
+   //channel_makehist("WWZ_SF_noZ",1);
+   //channel_makehist("WWZ_SF_inZ",1);
+   //channel_makehist("WWZ_em",1);
    // WWZ channel
    WWZ_makehist("WWZ");
-   WWZ_makehist("WWZ_SF_noZ");
-   WWZ_makehist("WWZ_SF_inZ");
-   WWZ_makehist("WWZ_em");
+   //WWZ_makehist("WWZ_SF_noZ");
+   //WWZ_makehist("WWZ_SF_inZ");
+   //WWZ_makehist("WWZ_em");
 }
 
 void ana::Terminate()
