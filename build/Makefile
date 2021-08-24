@@ -6,9 +6,9 @@ SPECIALFLAGS= --exceptions
 CFLAGS = -I.
 LFLAGS =
 
-RCXX = $(CFLAGS) $(ROOTCFLAGS) -std=c++14
+RCXX = $(CFLAGS) $(ROOTCFLAGS) -std=c++17
 DBG = -g -L -O -m32
-CC = g++ ${DBG} $(RCXX) $(OPTCOMP) -std=c++14
+CC = g++ ${DBG} $(RCXX) $(OPTCOMP) -std=c++17
 F77 = f77
 
 all: run
