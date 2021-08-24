@@ -79,7 +79,7 @@ bool ana::WWZ_Cut()
    }
    if (chargesum!= 0) return false;
    cutflow("WWZ").pass("WWZ","chargesum=0",WWZ_wgt);
-   /**
+   
    // divide WWZ channel
    if(cutflow("WWZ").isPass("WWZ","B_veto77"))
    {
@@ -106,7 +106,7 @@ bool ana::WWZ_Cut()
          cutflow("WWZ").pass("WWZ","WWZ_em",WWZ_wgt);
       }
    }
-   **/
+   
 
    WWZ_Z_mass = (v_l_tlv[v_Z_pair[0].first]+v_l_tlv[v_Z_pair[0].second]).M();
    _WWZ_tree->Fill();
@@ -120,7 +120,7 @@ void ana::WWZ_operation()
    {
       channel_fillhist("WWZ",1,WWZ_wgt);
       WWZ_fillhist("WWZ",WWZ_wgt);
-      /**
+      
       if(cutflow("WWZ").isPass("WWZ","WWZ_SF_noZ")){
          channel_fillhist("WWZ_SF_noZ",1,WWZ_wgt);
          WWZ_fillhist("WWZ_SF_noZ",WWZ_wgt);
@@ -133,6 +133,6 @@ void ana::WWZ_operation()
          channel_fillhist("WWZ_em",1,WWZ_wgt);
          WWZ_fillhist("WWZ_em",WWZ_wgt);
       }
-      **/
+      
    }
 }

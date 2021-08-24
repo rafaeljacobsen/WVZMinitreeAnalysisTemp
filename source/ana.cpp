@@ -717,10 +717,10 @@ void ana::Initialize()
       .regCut("WWZ_6l","",true)
       .regCut("WWZ_5l","",true)
       .regCut("WWZ_4l","",true)
-      .regCut("chargesum=0","",true);
-      //.regCut("WWZ_SF_noZ","",true)
-      //.regCut("WWZ_SF_inZ","",true)
-      //.regCut("WWZ_em","",true);
+      .regCut("chargesum=0","",true)
+      .regCut("WWZ_SF_noZ","",true)
+      .regCut("WWZ_SF_inZ","",true)
+      .regCut("WWZ_em","",true);
    // make your own hist
    makehist("Z_mass_first",true);
    makehist("Z_mass_second",true);
@@ -728,22 +728,22 @@ void ana::Initialize()
    channel_makehist("ZZZ",3);
    channel_makehist("WZZ",2);
    channel_makehist("WWZ",1);
-   //channel_makehist("WWZ_SF_noZ",1);
-   //channel_makehist("WWZ_SF_inZ",1);
-   //channel_makehist("WWZ_em",1);
+   channel_makehist("WWZ_SF_noZ",1);
+   channel_makehist("WWZ_SF_inZ",1);
+   channel_makehist("WWZ_em",1);
    // WWZ channel
    WWZ_makehist("WWZ");
-   //WWZ_makehist("WWZ_SF_noZ");
-   //WWZ_makehist("WWZ_SF_inZ");
-   //WWZ_makehist("WWZ_em");
+   WWZ_makehist("WWZ_SF_noZ");
+   WWZ_makehist("WWZ_SF_inZ");
+   WWZ_makehist("WWZ_em");
 }
 
 void ana::Terminate()
 {
    std::ofstream _ofs_cutflow(_output_dir+_output_file+".txt",std::ofstream::out);   
    cutflow("initial").print(_ofs_cutflow);
-   cutflow("ZZZ").print(_ofs_cutflow);
-   cutflow("WZZ").print(_ofs_cutflow);
+   //cutflow("ZZZ").print(_ofs_cutflow);
+   //cutflow("WZZ").print(_ofs_cutflow);
    cutflow("WWZ").print(_ofs_cutflow);
    _ofs_cutflow.close();
    _output->Write("All");
