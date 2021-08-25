@@ -358,7 +358,10 @@ void ana::WWZ_makehist(TString channel_name){
    makehist(channel_name+"_elec_event_eta_less",true,3,0,3);
    makehist(channel_name+"_muon_event_eta_less",true,3,0,3);
    makehist(channel_name+"_event_eta_more",true,6,0,6);
-   makehist(channel_name+"_event_tightness",true,16,0,4);
+   //makehist(channel_name+"_event_tightness",true,16,0,4);
+   makehist(channel_name+"_event_numTight",true,4,0,4);
+   makehist(channel_name+"_event_numMedium",true,4,0,4);
+   makehist(channel_name+"_event_numLoose",true,4,0,4);
    makehist(channel_name+"_v_l_pid",true,40,-20,20);
 
 
@@ -376,8 +379,9 @@ void ana::WWZ_fillhist(TString channel_name, float fill_wgt){
    int W_num_eta_less = 0;
    int elec_num_eta_less = 0;
    int muon_num_eta_less = 0;
-   vector<int> tightnessVect; //vector of the tightness levels of the leptons
-   float tightness = 0.0;
+   int numTight = 0;
+   int numMedium = 0;
+   int numLoose = 0;
    //8-18-2021
    //first Z lep
    if (v_l_tlv[v_Z_pair[0].first].Eta() > 1.3 || v_l_tlv[v_Z_pair[0].first].Eta() < -1.3) {
@@ -446,6 +450,7 @@ void ana::WWZ_fillhist(TString channel_name, float fill_wgt){
       }
    }
 
+   /**
    tightnessVect.push_back(v_l_qual[v_Z_pair[0].first]);
    tightnessVect.push_back(v_l_qual[v_Z_pair[0].second]);
    tightnessVect.push_back(v_l_qual[W_id[0]]);
@@ -454,7 +459,7 @@ void ana::WWZ_fillhist(TString channel_name, float fill_wgt){
    for(int i=0; i < tightnessVect.size(); ++i){
       tightness += tightnessVect[i];
    }
-   tightness = tightness/tightnessVect.size(); //tightness is the average tightness level
+   tightness = tightness/tightnessVect.size(); //tightness is the average tightness level**/
    makehist(channel_name+"_Z_event_eta_more")->Fill(Z_num_eta_more, fill_wgt);
    makehist(channel_name+"_W_event_eta_more")->Fill(W_num_eta_more, fill_wgt);
    makehist(channel_name+"_elec_event_eta_more")->Fill(elec_num_eta_more, fill_wgt);
@@ -463,15 +468,21 @@ void ana::WWZ_fillhist(TString channel_name, float fill_wgt){
    makehist(channel_name+"_W_event_eta_less")->Fill(W_num_eta_less, fill_wgt);
    makehist(channel_name+"_elec_event_eta_less")->Fill(elec_num_eta_less, fill_wgt);
    makehist(channel_name+"_muon_event_eta_less")->Fill(muon_num_eta_less, fill_wgt);
-
    makehist(channel_name+"_event_eta_more")->Fill(W_num_eta_more+Z_num_eta_more, fill_wgt);
-   makehist(channel_name+"_event_tightness")->Fill(tightness, fill_wgt);
-   if (tightness < 1) {
-      cout << tightness << endl;
-   }
+   //makehist(channel_name+"_event_tightness")->Fill(tightness, fill_wgt);
    for (int i=0; i<4;i++){
       makehist(channel_name+"_v_l_pid")->Fill(v_l_pid[i], fill_wgt);
+      if (v_l_qual[i] == 2){
+         numTight += 1;
+      } else if (v_l_qual[i] == 1){
+         numMedium += 1;
+      } else {
+         numLoose += 1;
+      }
    }
+   makehist(channel_name+"_event_numTight")->Fill(numTight, fill_wgt);
+   makehist(channel_name+"_event_numMedium")->Fill(numMedium, fill_wgt);
+   makehist(channel_name+"_event_numLoose")->Fill(numLoose+Z_num_eta_more, fill_wgt);
    
 
    //8-17-2021
