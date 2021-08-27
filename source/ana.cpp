@@ -358,10 +358,13 @@ void ana::WWZ_makehist(TString channel_name){
    makehist(channel_name+"_elec_event_eta_less",true,3,0,3);
    makehist(channel_name+"_muon_event_eta_less",true,3,0,3);
    makehist(channel_name+"_event_eta_more",true,6,0,6);
+   makehist(channel_name+"_event_eta_less",true,6,0,6);
    //makehist(channel_name+"_event_tightness",true,16,0,4);
    makehist(channel_name+"_event_numTight",true,4,0,4);
    makehist(channel_name+"_event_numMedium",true,4,0,4);
    makehist(channel_name+"_event_numLoose",true,4,0,4);
+   makehist2d(channel_name+"_event_numTight_eta_less",true,4,0,4,6,0,6);
+   makehist2d(channel_name+"_event_numTight_eta_more",true,4,0,4,6,0,6);
    makehist(channel_name+"_v_l_pid",true,40,-20,20);
 
 
@@ -469,6 +472,7 @@ void ana::WWZ_fillhist(TString channel_name, float fill_wgt){
    makehist(channel_name+"_elec_event_eta_less")->Fill(elec_num_eta_less, fill_wgt);
    makehist(channel_name+"_muon_event_eta_less")->Fill(muon_num_eta_less, fill_wgt);
    makehist(channel_name+"_event_eta_more")->Fill(W_num_eta_more+Z_num_eta_more, fill_wgt);
+   makehist(channel_name+"_event_eta_less")->Fill(W_num_eta_less+Z_num_eta_less, fill_wgt);
    //makehist(channel_name+"_event_tightness")->Fill(tightness, fill_wgt);
    for (int i=0; i<4;i++){
       makehist(channel_name+"_v_l_pid")->Fill(v_l_pid[i], fill_wgt);
@@ -483,7 +487,8 @@ void ana::WWZ_fillhist(TString channel_name, float fill_wgt){
    makehist(channel_name+"_event_numTight")->Fill(numTight, fill_wgt);
    makehist(channel_name+"_event_numMedium")->Fill(numMedium, fill_wgt);
    makehist(channel_name+"_event_numLoose")->Fill(numLoose+Z_num_eta_more, fill_wgt);
-   
+   makehist2d(channel_name+"_event_numTight_eta_less")->Fill(numTight, W_num_eta_less+Z_num_eta_less, fill_wgt);
+   makehist2d(channel_name+"_event_numTight_eta_more")->Fill(numTight, W_num_eta_more+Z_num_eta_more, fill_wgt);
 
    //8-17-2021
    /**
