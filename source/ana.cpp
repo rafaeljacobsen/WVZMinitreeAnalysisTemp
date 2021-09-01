@@ -6,6 +6,7 @@
 #include <TLorentzVector.h>
 #include <fstream>
 #include <iostream>
+#include <numeric>
 #include "TString.h"
 using namespace std;
 ///////////////////////////////////////////////////below is universal functions for help////////////////////////////////////////////////
@@ -353,10 +354,14 @@ void ana::WWZ_makehist(TString channel_name){
    makehist(channel_name+"_W_event_eta_more",true,3,0,3);
    makehist(channel_name+"_elec_event_eta_more",true,3,0,3);
    makehist(channel_name+"_muon_event_eta_more",true,3,0,3);
-   makehist(channel_name+"_Z_event_eta_less",true,3,0,3);
-   makehist(channel_name+"_W_event_eta_less",true,3,0,3);
-   makehist(channel_name+"_elec_event_eta_less",true,3,0,3);
-   makehist(channel_name+"_muon_event_eta_less",true,3,0,3);
+   //makehist(channel_name+"_Z_event_eta_less",true,3,0,3);
+   //makehist(channel_name+"_W_event_eta_less",true,3,0,3);
+   //makehist(channel_name+"_elec_event_eta_less",true,3,0,3);
+   //makehist(channel_name+"_muon_event_eta_less",true,3,0,3);
+   makehist(channel_name+"_elec_event_numTight_4",true,5,0,5);
+   makehist(channel_name+"_muon_event_numTight_4",true,5,0,5);
+   makehist(channel_name+"_elec_event_numTight_2",true,5,0,5);
+   makehist(channel_name+"_muon_event_numTight_2",true,5,0,5);
    makehist(channel_name+"_event_eta_more",true,5,0,5);
    makehist(channel_name+"_event_eta_less",true,5,0,5);
    //makehist(channel_name+"_event_tightness",true,16,0,4);
@@ -467,23 +472,54 @@ void ana::WWZ_fillhist(TString channel_name, float fill_wgt){
    makehist(channel_name+"_W_event_eta_more")->Fill(W_num_eta_more, fill_wgt);
    makehist(channel_name+"_elec_event_eta_more")->Fill(elec_num_eta_more, fill_wgt);
    makehist(channel_name+"_muon_event_eta_more")->Fill(muon_num_eta_more, fill_wgt);
-   makehist(channel_name+"_Z_event_eta_less")->Fill(Z_num_eta_less, fill_wgt);
-   makehist(channel_name+"_W_event_eta_less")->Fill(W_num_eta_less, fill_wgt);
-   makehist(channel_name+"_elec_event_eta_less")->Fill(elec_num_eta_less, fill_wgt);
-   makehist(channel_name+"_muon_event_eta_less")->Fill(muon_num_eta_less, fill_wgt);
+   //makehist(channel_name+"_Z_event_eta_less")->Fill(Z_num_eta_less, fill_wgt);
+   //makehist(channel_name+"_W_event_eta_less")->Fill(W_num_eta_less, fill_wgt);
+   //makehist(channel_name+"_elec_event_eta_less")->Fill(elec_num_eta_less, fill_wgt);
+   //makehist(channel_name+"_muon_event_eta_less")->Fill(muon_num_eta_less, fill_wgt);
    makehist(channel_name+"_event_eta_more")->Fill(W_num_eta_more+Z_num_eta_more, fill_wgt);
    makehist(channel_name+"_event_eta_less")->Fill(W_num_eta_less+Z_num_eta_less, fill_wgt);
    //makehist(channel_name+"_event_tightness")->Fill(tightness, fill_wgt);
+   vector<int> elecTight;
+   vector<int> muonTight;
+
    for (int i=0; i<4;i++){
       makehist(channel_name+"_v_l_pid")->Fill(v_l_pid[i], fill_wgt);
-      if (v_l_qual[i] == 2){
-         numTight += 1;
-      } else if (v_l_qual[i] == 1){
-         numMedium += 1;
-      } else {
-         numLoose += 1;
+      if (abs(v_l_pid[i]) == 11){
+         if (v_l_qual[i] == 2){
+            numTight += 1;
+            elecTight.push_back(1);
+         } else if (v_l_qual[i] == 1){
+            numMedium += 1;
+            elecTight.push_back(0);
+         } else {
+            numLoose += 1;
+            elecTight.push_back(0);
+         }
+      } else if (abs(v_l_pid[i]) == 13){
+         if (v_l_qual[i] == 2){
+            numTight += 1;
+            muonTight.push_back(1);
+         } else if (v_l_qual[i] == 1){
+            numMedium += 1;
+            muonTight.push_back(0);
+         } else {
+            numLoose += 1;
+            muonTight.push_back(0);
+         }
       }
    }
+
+   if (elecTight.size() == 4){
+      makehist(channel_name+"_elec_event_numTight_4")->Fill(accumulate(elecTight.begin(),elecTight.end(),0), fill_wgt);
+   } else if (elecTight.size() == 2){
+      makehist(channel_name+"_elec_event_numTight_2")->Fill(accumulate(elecTight.begin(),elecTight.end(),0), fill_wgt);
+   }
+   if (muonTight.size() == 4){
+      makehist(channel_name+"_muon_event_numTight_4")->Fill(accumulate(muonTight.begin(),muonTight.end(),0), fill_wgt);
+   } else if (muonTight.size() == 2){
+      makehist(channel_name+"_muon_event_numTight_2")->Fill(accumulate(muonTight.begin(),muonTight.end(),0), fill_wgt);
+   }
+   
    makehist(channel_name+"_event_numTight")->Fill(numTight, fill_wgt);
    makehist(channel_name+"_event_numMedium")->Fill(numMedium, fill_wgt);
    makehist(channel_name+"_event_numLoose")->Fill(numLoose+Z_num_eta_more, fill_wgt);
