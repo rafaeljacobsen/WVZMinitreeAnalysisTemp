@@ -381,7 +381,7 @@ void ana::WWZ_makehist(TString channel_name){
    makehist2d(channel_name+"_Z_event_eta",true,2,0,2,2,0,2);
    makehist2d(channel_name+"_W_event_eta",true,2,0,2,2,0,2);
 
-   makehist2d(channel_name+"_event_qual",true,6,0,6,6,0,6);
+   makehist2d(channel_name+"_event_qual",true,5,0,5,5,0,5);
    makehist2d(channel_name+"_event_eta",true,3,0,3,3,0,3);
 
    //makehist(channel_name+"_event_eta_more",true,5,0,5);
