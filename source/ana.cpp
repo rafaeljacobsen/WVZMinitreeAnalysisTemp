@@ -376,6 +376,11 @@ void ana::WWZ_makehist(TString channel_name){
    makehist(channel_name+"_Z_event_eta_second",true,2,0,2);
    makehist(channel_name+"_W_event_eta_second",true,2,0,2);
 
+   makehist2d(channel_name+"_Z_event_qual",true,3,0,3,3,0,3);
+   makehist2d(channel_name+"_W_event_qual",true,3,0,3,3,0,3);
+   makehist2d(channel_name+"_Z_event_eta",true,2,0,2,2,0,2);
+   makehist2d(channel_name+"_W_event_eta",true,2,0,2,2,0,2);
+
    //makehist(channel_name+"_event_eta_more",true,5,0,5);
    //makehist(channel_name+"_event_eta_less",true,5,0,5);
    //makehist(channel_name+"_event_tightness",true,16,0,4);
@@ -517,6 +522,11 @@ void ana::WWZ_fillhist(TString channel_name, float fill_wgt){
    makehist(channel_name+"_W_event_eta_second")->Fill(W_num_eta_second, fill_wgt);
    makehist(channel_name+"_Z_event_qual_second")->Fill(Z_num_qual_second, fill_wgt);
    makehist(channel_name+"_W_event_qual_second")->Fill(W_num_qual_second, fill_wgt);
+
+   makehist2d(channel_name+"_Z_event_eta")->Fill(Z_num_eta_first, Z_num_eta_second, fill_wgt);
+   makehist2d(channel_name+"_W_event_eta")->Fill(W_num_eta_first, W_num_eta_second, fill_wgt);
+   makehist2d(channel_name+"_Z_event_qual")->Fill(Z_num_qual_first, Z_num_qual_second, fill_wgt);
+   makehist2d(channel_name+"_W_event_qual")->Fill(W_num_qual_first, W_num_qual_second, fill_wgt);
 
    //makehist(channel_name+"_elec_event_eta_less")->Fill(elec_num_eta_less, fill_wgt);
    //makehist(channel_name+"_muon_event_eta_less")->Fill(muon_num_eta_less, fill_wgt);
