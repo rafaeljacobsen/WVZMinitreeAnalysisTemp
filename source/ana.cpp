@@ -367,22 +367,24 @@ void ana::WWZ_makehist(TString channel_name){
    //makehist(channel_name+"_all_muon_eta_less",true,3,0,3);
    //makehist(channel_name+"_all_elec_eta_less",true,3,0,3);
 
-   makehist(channel_name+"_Z_event_qual_first",true,3,0,3);
-   makehist(channel_name+"_W_event_qual_first",true,3,0,3);
-   makehist(channel_name+"_Z_event_eta_first",true,2,0,2);
-   makehist(channel_name+"_W_event_eta_first",true,2,0,2);
-   makehist(channel_name+"_Z_event_qual_second",true,3,0,3);
-   makehist(channel_name+"_W_event_qual_second",true,3,0,3);
-   makehist(channel_name+"_Z_event_eta_second",true,2,0,2);
-   makehist(channel_name+"_W_event_eta_second",true,2,0,2);
+   //makehist(channel_name+"_Z_event_qual_first",true,3,0,3);
+   //makehist(channel_name+"_W_event_qual_first",true,3,0,3);
+   //makehist(channel_name+"_Z_event_eta_first",true,2,0,2);
+   //makehist(channel_name+"_W_event_eta_first",true,2,0,2);
+   //makehist(channel_name+"_Z_event_qual_second",true,3,0,3);
+   //makehist(channel_name+"_W_event_qual_second",true,3,0,3);
+   //makehist(channel_name+"_Z_event_eta_second",true,2,0,2);
+   //makehist(channel_name+"_W_event_eta_second",true,2,0,2);
 
-   makehist2d(channel_name+"_Z_event_qual",true,3,0,3,3,0,3);
-   makehist2d(channel_name+"_W_event_qual",true,3,0,3,3,0,3);
-   makehist2d(channel_name+"_Z_event_eta",true,2,0,2,2,0,2);
-   makehist2d(channel_name+"_W_event_eta",true,2,0,2,2,0,2);
+   //makehist2d(channel_name+"_Z_event_qual",true,3,0,3,3,0,3);
+   //makehist2d(channel_name+"_W_event_qual",true,3,0,3,3,0,3);
+   //makehist2d(channel_name+"_Z_event_eta",true,2,0,2,2,0,2);
+   //makehist2d(channel_name+"_W_event_eta",true,2,0,2,2,0,2);
 
-   makehist2d(channel_name+"_event_qual",true,5,0,5,5,0,5);
-   makehist2d(channel_name+"_event_eta",true,3,0,3,3,0,3);
+   //makehist2d(channel_name+"_event_qual",true,5,0,5,5,0,5);
+   //makehist2d(channel_name+"_event_eta",true,3,0,3,3,0,3);
+
+   makehist2d(channel_name+"_event_eta_more",true,5,0,5,17,0,3.4);
 
    //makehist(channel_name+"_event_eta_more",true,5,0,5);
    //makehist(channel_name+"_event_eta_less",true,5,0,5);
@@ -421,9 +423,21 @@ void ana::WWZ_fillhist(TString channel_name, float fill_wgt){
    int numTight = 0;
    int numMedium = 0;
    int numLoose = 0;
+   int numEtaMore = 0;
    int zero = 0;
 
-   //8-18-2021
+   for (int i=0; i < 34; ++i){
+      numEtaMore = 0;
+      for (int j=0; j < 4; ++j){
+         if (v_l_tlv[j].Eta() > 0.1*i || v_l_tlv[j].Eta() < (-1)*(0.1*i)){
+            numEtaMore += 1;
+         }
+      }
+      makehist2d(channel_name+"_event_eta_more")->Fill(numEtaMore, 0.1*i+0.05, fill_wgt);
+   }
+
+   /**
+   //8-18-2021 -> 9-6-2021
    //fill eta variables
    //first Z lep
    if (v_l_tlv[v_Z_pair[0].first].Eta() > 1.3 || v_l_tlv[v_Z_pair[0].first].Eta() < -1.3) {
@@ -487,7 +501,7 @@ void ana::WWZ_fillhist(TString channel_name, float fill_wgt){
          muon_num_eta_less += 1;
       }
    }
-
+   **/
    //fills Z & W qual variables
    if (v_l_qual[v_Z_pair[0].first] == 2) Z_num_qual_first = 2;
    if (v_l_qual[v_Z_pair[0].second] == 2) Z_num_qual_second = 2;
@@ -516,6 +530,9 @@ void ana::WWZ_fillhist(TString channel_name, float fill_wgt){
    //makehist(channel_name+"_W_event_eta_more")->Fill(W_num_eta_more, fill_wgt);
    //makehist(channel_name+"_elec_event_eta_more")->Fill(elec_num_eta_more, fill_wgt);
    //makehist(channel_name+"_muon_event_eta_more")->Fill(muon_num_eta_more, fill_wgt);
+   
+   /**
+   //9-6-2021
    makehist(channel_name+"_Z_event_eta_first")->Fill(Z_num_eta_first, fill_wgt);
    makehist(channel_name+"_W_event_eta_first")->Fill(W_num_eta_first, fill_wgt);
    makehist(channel_name+"_Z_event_qual_first")->Fill(Z_num_qual_first, fill_wgt);
@@ -533,6 +550,7 @@ void ana::WWZ_fillhist(TString channel_name, float fill_wgt){
 
    makehist2d(channel_name+"_event_eta")->Fill(Z_num_eta_first + Z_num_eta_second, W_num_eta_first + W_num_eta_second, fill_wgt);
    makehist2d(channel_name+"_event_qual")->Fill(Z_num_qual_first + Z_num_qual_second, W_num_qual_first + W_num_qual_second, fill_wgt);
+   **/
 
    //makehist(channel_name+"_elec_event_eta_less")->Fill(elec_num_eta_less, fill_wgt);
    //makehist(channel_name+"_muon_event_eta_less")->Fill(muon_num_eta_less, fill_wgt);
