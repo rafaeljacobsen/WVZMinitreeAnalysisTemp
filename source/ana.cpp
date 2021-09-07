@@ -388,11 +388,11 @@ void ana::WWZ_makehist(TString channel_name){
    makehist(channel_name+"_event_eta_more_0.0",true,5,0,5);
    makehist(channel_name+"_event_eta_more_0.2",true,5,0,5);
    makehist(channel_name+"_event_eta_more_0.4",true,5,0,5);
+   makehist(channel_name+"_event_eta_more_2.4",true,5,0,5);
    makehist(channel_name+"_event_eta_more_2.6",true,5,0,5);
    makehist(channel_name+"_event_eta_more_2.8",true,5,0,5);
    makehist(channel_name+"_event_eta_more_3.0",true,5,0,5);
    makehist(channel_name+"_event_eta_more_3.2",true,5,0,5);
-   makehist(channel_name+"_event_eta_more_3.4",true,5,0,5);
 
 
    //makehist(channel_name+"_event_eta_more",true,5,0,5);
@@ -453,6 +453,7 @@ void ana::WWZ_fillhist(TString channel_name, float fill_wgt){
    }
    makehist(channel_name+"_event_eta_more_0.0")->Fill(numEtaMore, fill_wgt);
 
+
    numEtaMore = 0;
    for (int j=0; j < 4; ++j){
       if (v_l_tlv[j].Eta() > 0.2 || v_l_tlv[j].Eta() < -0.2){
@@ -460,6 +461,7 @@ void ana::WWZ_fillhist(TString channel_name, float fill_wgt){
       }
    }
    makehist(channel_name+"_event_eta_more_0.2")->Fill(numEtaMore, fill_wgt);
+
 
    numEtaMore = 0;
    for (int j=0; j < 4; ++j){
@@ -469,6 +471,16 @@ void ana::WWZ_fillhist(TString channel_name, float fill_wgt){
    }
    makehist(channel_name+"_event_eta_more_0.4")->Fill(numEtaMore, fill_wgt);
 
+
+   numEtaMore = 0;
+   for (int j=0; j < 4; ++j){
+      if (v_l_tlv[j].Eta() > 2.4 || v_l_tlv[j].Eta() < -2.4){
+         numEtaMore += 1;
+      }
+   }
+   makehist(channel_name+"_event_eta_more_2.4")->Fill(numEtaMore, fill_wgt);
+
+
    numEtaMore = 0;
    for (int j=0; j < 4; ++j){
       if (v_l_tlv[j].Eta() > 2.6 || v_l_tlv[j].Eta() < -2.6){
@@ -476,6 +488,7 @@ void ana::WWZ_fillhist(TString channel_name, float fill_wgt){
       }
    }
    makehist(channel_name+"_event_eta_more_2.6")->Fill(numEtaMore, fill_wgt);
+
 
    numEtaMore = 0;
    for (int j=0; j < 4; ++j){
@@ -500,14 +513,6 @@ void ana::WWZ_fillhist(TString channel_name, float fill_wgt){
       }
    }
    makehist(channel_name+"_event_eta_more_3.2")->Fill(numEtaMore, fill_wgt);
-
-   numEtaMore = 0;
-   for (int j=0; j < 4; ++j){
-      if (v_l_tlv[j].Eta() > 3.4 || v_l_tlv[j].Eta() < -3.4){
-         numEtaMore += 1;
-      }
-   }
-   makehist(channel_name+"_event_eta_more_3.4")->Fill(numEtaMore, fill_wgt);
 
    /**
    //8-18-2021 -> 9-6-2021
