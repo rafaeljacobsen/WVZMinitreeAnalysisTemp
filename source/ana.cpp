@@ -436,14 +436,15 @@ void ana::WWZ_fillhist(TString channel_name, float fill_wgt){
    int numEtaMore = 0;
    int zero = 0;
 
-   for (int i=0; i < 34; ++i){
+   for (int i=0; i < 17; ++i){
       numEtaMore = 0;
       for (int j=0; j < 4; ++j){
-         if (v_l_tlv[j].Eta() > 0.1*i || v_l_tlv[j].Eta() < (-1)*(0.1*i)){
+         if (v_l_tlv[j].Eta() > 0.2*i || v_l_tlv[j].Eta() < (-1)*(0.2*i)){
             numEtaMore += 1;
          }
       }
-      makehist2d(channel_name+"_event_eta_more")->Fill(numEtaMore, 0.1*i+0.05, fill_wgt);
+      cout << 0.2*i << endl;
+      makehist2d(channel_name+"_event_eta_more")->Fill(numEtaMore, 0.2*i+0.05, fill_wgt);
    }
 
    /**
