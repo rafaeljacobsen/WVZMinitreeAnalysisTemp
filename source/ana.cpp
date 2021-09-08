@@ -443,7 +443,6 @@ void ana::WWZ_fillhist(TString channel_name, float fill_wgt){
             numEtaMore += 1;
          }
       }
-      cout << 0.2*i << endl;
       makehist2d(channel_name+"_event_eta_more")->Fill(numEtaMore, 0.2*i+0.05, fill_wgt);
    }
 
