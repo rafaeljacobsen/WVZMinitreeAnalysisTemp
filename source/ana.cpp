@@ -385,6 +385,7 @@ void ana::WWZ_makehist(TString channel_name){
    //makehist2d(channel_name+"_event_eta",true,3,0,3,3,0,3);
 
    makehist2d(channel_name+"_event_eta_more",true,5,0,5,17,0,3.4);
+   /**
    makehist(channel_name+"_event_eta_more_0.0",true,5,0,5);
    makehist(channel_name+"_event_eta_more_0.2",true,5,0,5);
    makehist(channel_name+"_event_eta_more_0.4",true,5,0,5);
@@ -392,7 +393,7 @@ void ana::WWZ_makehist(TString channel_name){
    makehist(channel_name+"_event_eta_more_2.6",true,5,0,5);
    makehist(channel_name+"_event_eta_more_2.8",true,5,0,5);
    makehist(channel_name+"_event_eta_more_3.0",true,5,0,5);
-   makehist(channel_name+"_event_eta_more_3.2",true,5,0,5);
+   makehist(channel_name+"_event_eta_more_3.2",true,5,0,5);**/
 
 
    //makehist(channel_name+"_event_eta_more",true,5,0,5);
@@ -445,52 +446,53 @@ void ana::WWZ_fillhist(TString channel_name, float fill_wgt){
       makehist2d(channel_name+"_event_eta_more")->Fill(numEtaMore, 0.1*i+0.05, fill_wgt);
    }
 
-   numEtaMore = 0;
+   /**
+   int numEtaMore00 = 0;
    for (int j=0; j < 4; ++j){
       if (v_l_tlv[j].Eta() > 0.0 || v_l_tlv[j].Eta() < -0.0){
-         numEtaMore += 1;
+         numEtaMore00 += 1;
       }
    }
-   makehist(channel_name+"_event_eta_more_0.0")->Fill(numEtaMore, fill_wgt);
+   makehist(channel_name+"_event_eta_more_0.0")->Fill(numEtaMore00, fill_wgt);
 
 
-   numEtaMore = 0;
+   int umEtaMore02 = 0;
    for (int j=0; j < 4; ++j){
       if (v_l_tlv[j].Eta() > 0.2 || v_l_tlv[j].Eta() < -0.2){
-         numEtaMore += 1;
+         numEtaMore02 += 1;
       }
    }
-   makehist(channel_name+"_event_eta_more_0.2")->Fill(numEtaMore, fill_wgt);
+   makehist(channel_name+"_event_eta_more_0.2")->Fill(numEtaMore02, fill_wgt);
 
 
-   numEtaMore = 0;
+   int numEtaMore04 = 0;
    for (int j=0; j < 4; ++j){
       if (v_l_tlv[j].Eta() > 0.4 || v_l_tlv[j].Eta() < -0.4){
-         numEtaMore += 1;
+         numEtaMore04 += 1;
       }
    }
-   makehist(channel_name+"_event_eta_more_0.4")->Fill(numEtaMore, fill_wgt);
+   makehist(channel_name+"_event_eta_more_0.4")->Fill(numEtaMore04, fill_wgt);
 
 
-   numEtaMore = 0;
+   int numEtaMore24 = 0;
    for (int j=0; j < 4; ++j){
       if (v_l_tlv[j].Eta() > 2.4 || v_l_tlv[j].Eta() < -2.4){
-         numEtaMore += 1;
+         numEtaMore24 += 1;
       }
    }
-   makehist(channel_name+"_event_eta_more_2.4")->Fill(numEtaMore, fill_wgt);
+   makehist(channel_name+"_event_eta_more_2.4")->Fill(numEtaMore24, fill_wgt);
 
 
-   numEtaMore = 0;
+   int numEtaMore26 = 0;
    for (int j=0; j < 4; ++j){
       if (v_l_tlv[j].Eta() > 2.6 || v_l_tlv[j].Eta() < -2.6){
-         numEtaMore += 1;
+         numEtaMore26 += 1;
       }
    }
-   makehist(channel_name+"_event_eta_more_2.6")->Fill(numEtaMore, fill_wgt);
+   makehist(channel_name+"_event_eta_more_2.6")->Fill(numEtaMore26, fill_wgt);
 
 
-   numEtaMore = 0;
+   int numEtaMore = 0;
    for (int j=0; j < 4; ++j){
       if (v_l_tlv[j].Eta() > 2.8 || v_l_tlv[j].Eta() < -2.8){
          numEtaMore += 1;
@@ -498,22 +500,22 @@ void ana::WWZ_fillhist(TString channel_name, float fill_wgt){
    }
    makehist(channel_name+"_event_eta_more_2.8")->Fill(numEtaMore, fill_wgt);
 
-   numEtaMore = 0;
+   int numEtaMore30 = 0;
    for (int j=0; j < 4; ++j){
       if (v_l_tlv[j].Eta() > 3.0 || v_l_tlv[j].Eta() < -3.0){
-         numEtaMore += 1;
+         numEtaMore30 += 1;
       }
    }
-   makehist(channel_name+"_event_eta_more_3.0")->Fill(numEtaMore, fill_wgt);
+   makehist(channel_name+"_event_eta_more_3.0")->Fill(numEtaMore30, fill_wgt);
 
-   numEtaMore = 0;
+   int numEtaMore32 = 0;
    for (int j=0; j < 4; ++j){
       if (v_l_tlv[j].Eta() > 3.2 || v_l_tlv[j].Eta() < -3.2){
-         numEtaMore += 1;
+         numEtaMore32 += 1;
       }
    }
-   makehist(channel_name+"_event_eta_more_3.2")->Fill(numEtaMore, fill_wgt);
-
+   makehist(channel_name+"_event_eta_more_3.2")->Fill(numEtaMore32, fill_wgt);
+   **/
    /**
    //8-18-2021 -> 9-6-2021
    //fill eta variables
