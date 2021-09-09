@@ -399,7 +399,7 @@ void ana::WWZ_makehist(TString channel_name){
    //makehist(channel_name+"_event_eta_more",true,5,0,5);
    //makehist(channel_name+"_event_eta_less",true,5,0,5);
    //makehist(channel_name+"_event_tightness",true,16,0,4);
-   //makehist(channel_name+"_event_numTight",true,5,0,5);
+   makehist(channel_name+"_event_numTight",true,5,0,5);
    //makehist(channel_name+"_event_numMedium",true,5,0,5);
    //makehist(channel_name+"_event_numLoose",true,5,0,5);
    //makehist2d(channel_name+"_event_numTight_eta_less",true,5,0,5,5,0,5);
@@ -435,6 +435,14 @@ void ana::WWZ_fillhist(TString channel_name, float fill_wgt){
    int numLoose = 0;
    int numEtaMore = 0;
    int zero = 0;
+
+
+   for (int i=0; i<4;i++){
+      if (v_l_qual[i] == 2){
+         numTight += 1;
+      }
+   }
+   makehist(channel_name+"_event_numTight")->Fill(numTight, fill_wgt);
 
    for (int i=0; i < 17; ++i){
       numEtaMore = 0;
