@@ -406,6 +406,18 @@ void ana::WWZ_makehist(TString channel_name){
    makehist2d(channel_name+"_event_eta_more_2tight",true,5,0,5,17,0,3.4);
    makehist2d(channel_name+"_event_eta_more_1tight",true,5,0,5,17,0,3.4);
    makehist2d(channel_name+"_event_eta_more_0tight",true,5,0,5,17,0,3.4);
+
+   makehist2d(channel_name+"_event_eta_more_4tight_elec",true,5,0,5,17,0,3.4);
+   makehist2d(channel_name+"_event_eta_more_3tight_elec",true,5,0,5,17,0,3.4);
+   makehist2d(channel_name+"_event_eta_more_2tight_elec",true,5,0,5,17,0,3.4);
+   makehist2d(channel_name+"_event_eta_more_1tight_elec",true,5,0,5,17,0,3.4);
+   makehist2d(channel_name+"_event_eta_more_0tight_elec",true,5,0,5,17,0,3.4);
+
+   makehist2d(channel_name+"_event_eta_more_4tight_muon",true,5,0,5,17,0,3.4);
+   makehist2d(channel_name+"_event_eta_more_3tight_muon",true,5,0,5,17,0,3.4);
+   makehist2d(channel_name+"_event_eta_more_2tight_muon",true,5,0,5,17,0,3.4);
+   makehist2d(channel_name+"_event_eta_more_1tight_muon",true,5,0,5,17,0,3.4);
+   makehist2d(channel_name+"_event_eta_more_0tight_muon",true,5,0,5,17,0,3.4);
    //makehist(channel_name+"_event_numMedium",true,5,0,5);
    //makehist(channel_name+"_event_numLoose",true,5,0,5);
    //makehist2d(channel_name+"_event_numTight_eta_less",true,5,0,5,5,0,5);
@@ -468,6 +480,32 @@ void ana::WWZ_fillhist(TString channel_name, float fill_wgt){
          makehist2d(channel_name+"_event_eta_more_3tight")->Fill(numEtaMore, 0.2*i+0.05, fill_wgt);
       } else {
          makehist2d(channel_name+"_event_eta_more_4tight")->Fill(numEtaMore, 0.2*i+0.05, fill_wgt);
+      }
+
+      if (v_l_pid[i] == 11 || v_l_pid[i] == -11) {
+         if (numTight == 0){
+            makehist2d(channel_name+"_event_eta_more_0tight_elec")->Fill(numEtaMore, 0.2*i+0.05, fill_wgt);
+         } else if (numTight == 1){
+            makehist2d(channel_name+"_event_eta_more_1tight_elec")->Fill(numEtaMore, 0.2*i+0.05, fill_wgt);
+         } else if (numTight == 2){
+            makehist2d(channel_name+"_event_eta_more_2tight_elec")->Fill(numEtaMore, 0.2*i+0.05, fill_wgt);
+         } else if (numTight == 3){
+            makehist2d(channel_name+"_event_eta_more_3tight_elec")->Fill(numEtaMore, 0.2*i+0.05, fill_wgt);
+         } else {
+            makehist2d(channel_name+"_event_eta_more_4tight_elec")->Fill(numEtaMore, 0.2*i+0.05, fill_wgt);
+         }
+      } else {
+         if (numTight == 0){
+            makehist2d(channel_name+"_event_eta_more_0tight_muon")->Fill(numEtaMore, 0.2*i+0.05, fill_wgt);
+         } else if (numTight == 1){
+            makehist2d(channel_name+"_event_eta_more_1tight_muon")->Fill(numEtaMore, 0.2*i+0.05, fill_wgt);
+         } else if (numTight == 2){
+            makehist2d(channel_name+"_event_eta_more_2tight_muon")->Fill(numEtaMore, 0.2*i+0.05, fill_wgt);
+         } else if (numTight == 3){
+            makehist2d(channel_name+"_event_eta_more_3tight_muon")->Fill(numEtaMore, 0.2*i+0.05, fill_wgt);
+         } else {
+            makehist2d(channel_name+"_event_eta_more_4tight_muon")->Fill(numEtaMore, 0.2*i+0.05, fill_wgt);
+         }
       }
    }
 
@@ -547,11 +585,7 @@ void ana::WWZ_fillhist(TString channel_name, float fill_wgt){
    //first Z lep
    if (v_l_tlv[v_Z_pair[0].first].Eta() > 1.3 || v_l_tlv[v_Z_pair[0].first].Eta() < -1.3) {
       Z_num_eta_first = 1;
-      if (v_l_pid[v_Z_pair[0].first] == 11 || v_l_pid[v_Z_pair[0].first] == -11) {
-         elec_num_eta_more += 1;
-      } else {
-         muon_num_eta_more += 1;
-      }
+      c
    } else {
       if (v_l_pid[v_Z_pair[0].first] == 11 || v_l_pid[v_Z_pair[0].first] == -11) {
          elec_num_eta_less += 1;
