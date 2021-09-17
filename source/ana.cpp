@@ -384,7 +384,7 @@ void ana::WWZ_makehist(TString channel_name){
    //makehist2d(channel_name+"_event_qual",true,5,0,5,5,0,5);
    //makehist2d(channel_name+"_event_eta",true,3,0,3,3,0,3);
 
-   makehist2d(channel_name+"_event_eta_more",true,5,0,5,17,0,3.4);
+   makehist2d(channel_name+"_event_eta_less",true,5,0,5,17,0,3.4);
    /**
    makehist(channel_name+"_event_eta_more_0.0",true,5,0,5);
    makehist(channel_name+"_event_eta_more_0.2",true,5,0,5);
@@ -401,14 +401,11 @@ void ana::WWZ_makehist(TString channel_name){
    //makehist(channel_name+"_event_tightness",true,16,0,4);
    makehist(channel_name+"_event_numTight",true,5,0,5);
 
-   makehist2d(channel_name+"_event_eta_more_4tight",true,5,0,5,17,0,3.4);
-   makehist2d(channel_name+"_event_eta_more_3tight",true,5,0,5,17,0,3.4);
-   makehist2d(channel_name+"_event_eta_more_2tight",true,5,0,5,17,0,3.4);
-   makehist2d(channel_name+"_event_eta_more_1tight",true,5,0,5,17,0,3.4);
-   makehist2d(channel_name+"_event_eta_more_0tight",true,5,0,5,17,0,3.4);
-
-   makehist2d(channel_name+"_elec_eta_more",true,34,0,3.4,3,0,3);
-   makehist2d(channel_name+"_muon_eta_more",true,34,0,3.4,3,0,3);
+   makehist2d(channel_name+"_event_eta_less_4tight",true,5,0,5,17,0,3.4);
+   makehist2d(channel_name+"_event_eta_less_3tight",true,5,0,5,17,0,3.4);
+   makehist2d(channel_name+"_event_eta_less_2tight",true,5,0,5,17,0,3.4);
+   makehist2d(channel_name+"_event_eta_less_1tight",true,5,0,5,17,0,3.4);
+   makehist2d(channel_name+"_event_eta_less_0tight",true,5,0,5,17,0,3.4);
    //makehist(channel_name+"_event_numMedium",true,5,0,5);
    //makehist(channel_name+"_event_numLoose",true,5,0,5);
    //makehist2d(channel_name+"_event_numTight_eta_less",true,5,0,5,5,0,5);
@@ -442,7 +439,7 @@ void ana::WWZ_fillhist(TString channel_name, float fill_wgt){
    int numTight = 0;
    int numMedium = 0;
    int numLoose = 0;
-   int numEtaMore = 0;
+   int numEtaLess = 0;
    int zero = 0;
 
    for (int i=0; i<4;i++){
@@ -453,34 +450,28 @@ void ana::WWZ_fillhist(TString channel_name, float fill_wgt){
    makehist(channel_name+"_event_numTight")->Fill(numTight, fill_wgt);
 
    for (int i=0; i < 17; ++i){
-      numEtaMore = 0;
+      numEtaLess = 0;
       for (int j=0; j < 4; ++j){
-         if (v_l_tlv[j].Eta() > 0.2*i || v_l_tlv[j].Eta() < (-1)*(0.2*i)){
-            numEtaMore += 1;
+         if (v_l_tlv[j].Eta() < 0.2*i && v_l_tlv[j].Eta() > (-1)*(0.2*i)){
+            numEtaLess += 1;
          }
       }
 
-      makehist2d(channel_name+"_event_eta_more")->Fill(numEtaMore, 0.2*i+0.05, fill_wgt);
+      makehist2d(channel_name+"_event_eta_less")->Fill(numEtaLess, 0.2*i+0.05, fill_wgt);
       if (numTight == 0){
-         makehist2d(channel_name+"_event_eta_more_0tight")->Fill(numEtaMore, 0.2*i+0.05, fill_wgt);
+         makehist2d(channel_name+"_event_eta_less_0tight")->Fill(numEtaLess, 0.2*i+0.05, fill_wgt);
       } else if (numTight == 1){
-         makehist2d(channel_name+"_event_eta_more_1tight")->Fill(numEtaMore, 0.2*i+0.05, fill_wgt);
-      } else if (numTight == 2){
-         makehist2d(channel_name+"_event_eta_more_2tight")->Fill(numEtaMore, 0.2*i+0.05, fill_wgt);
+         makehist2d(channel_name+"_event_eta_less_1tight")->Fill(numEtaLess, 0.2*i+0.05, fill_wgt);
+      } else if (numTight == 2) {
+         makehist2d(channel_name+"_event_eta_less_2tight")->Fill(numEtaLess, 0.2*i+0.05, fill_wgt);
       } else if (numTight == 3){
-         makehist2d(channel_name+"_event_eta_more_3tight")->Fill(numEtaMore, 0.2*i+0.05, fill_wgt);
+         makehist2d(channel_name+"_event_eta_less_3tight")->Fill(numEtaLess, 0.2*i+0.05, fill_wgt);
       } else {
-         makehist2d(channel_name+"_event_eta_more_4tight")->Fill(numEtaMore, 0.2*i+0.05, fill_wgt);
+         makehist2d(channel_name+"_event_eta_less_4tight")->Fill(numEtaLess, 0.2*i+0.05, fill_wgt);
       }
    }
 
-   for (int j=0; j < 4; ++j){
-      if (v_l_pid[j] == 11 || v_l_pid[j] == -11) {
-         makehist2d(channel_name+"_elec_eta_more")->Fill(v_l_tlv[j].Eta(), v_l_qual[j], fill_wgt);
-      } else {
-         makehist2d(channel_name+"_muon_eta_more")->Fill(v_l_tlv[j].Eta(), v_l_qual[j], fill_wgt);
-      }
-   }
+
    /**
    int numEtaMore00 = 0;
    for (int j=0; j < 4; ++j){
