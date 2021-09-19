@@ -344,6 +344,12 @@ void ana::WWZ_makehist(TString channel_name){
    makehist(channel_name+"_event_numTight",true,5,0,5);
    makehist(channel_name+"_muon_eta",true,17,0,3.4);
    makehist(channel_name+"_elec_eta",true,17,0,3.4);
+   makehist(channel_name+"_muon_eta_tight",true,17,0,3.4);
+   makehist(channel_name+"_elec_eta_tight",true,17,0,3.4);
+   makehist(channel_name+"_muon_eta_medium",true,17,0,3.4);
+   makehist(channel_name+"_elec_eta_medium",true,17,0,3.4);
+   makehist(channel_name+"_muon_eta_loose",true,17,0,3.4);
+   makehist(channel_name+"_elec_eta_loose",true,17,0,3.4);
 
 }
 void ana::WWZ_fillhist(TString channel_name, float fill_wgt){
@@ -364,8 +370,26 @@ void ana::WWZ_fillhist(TString channel_name, float fill_wgt){
       }
       if (v_l_pid[i] == 11 || v_l_pid[i] == -11){
          makehist(channel_name+"_elec_eta")->Fill(v_l_tlv[i].Eta(), fill_wgt);
+         if (v_l_qual[i] == 2){
+            makehist(channel_name+"_elec_eta_tight")->Fill(v_l_tlv[i].Eta(), fill_wgt);
+         } else if (v_l_qual[i] == 1){
+            makehist(channel_name+"_elec_eta_medium")->Fill(v_l_tlv[i].Eta(), fill_wgt);
+         } else if (v_l_qual[i] == 0){
+            makehist(channel_name+"_elec_eta_loose")->Fill(v_l_tlv[i].Eta(), fill_wgt);
+         }
       } else {
          makehist(channel_name+"_muon_eta")->Fill(v_l_tlv[i].Eta(), fill_wgt);
+         if (v_l_qual[i] == 2){
+            makehist(channel_name+"_muon_eta_tight")->Fill(v_l_tlv[i].Eta(), fill_wgt);
+         } else if (v_l_qual[i] == 1){
+            makehist(channel_name+"_muon_eta_medium")->Fill(v_l_tlv[i].Eta(), fill_wgt);
+         } else if (v_l_qual[i] == 0){
+            makehist(channel_name+"_muon_eta_loose")->Fill(v_l_tlv[i].Eta(), fill_wgt);
+         }
+      }
+      if (v_l_tlv[i].Eta() > 3.0){
+         cout << v_l_pid[i] << endl;
+         cout << v_l_qual[i] << endl;
       }
 
    }
