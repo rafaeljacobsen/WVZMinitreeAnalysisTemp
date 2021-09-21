@@ -338,24 +338,26 @@ void ana::channel_fillhist(TString channel_name, int nZ, float fill_wgt)
 
 void ana::WWZ_makehist(TString channel_name){
    //makes quality electron histos
-   makehist2d(channel_name+"_event_eta_less",true,5,0,5,34,0,3.4);
-   makehist2d(channel_name+"_event_elec_eta_less",true,5,0,5,34,0,3.4);
-   makehist2d(channel_name+"_event_muon_eta_less",true,5,0,5,34,0,3.4);
+   makehist2d(channel_name+"_event_eta_less",true,5,0,5,27,0,2.7);
+   makehist2d(channel_name+"_event_elec_eta_less",true,5,0,5,27,0,2.7);
+   makehist2d(channel_name+"_event_muon_eta_less",true,5,0,5,27,0,2.7);
    makehist(channel_name+"_event_numTight",true,5,0,5);
-   makehist(channel_name+"_muon_eta",true,34,0,3.4);
-   makehist(channel_name+"_elec_eta",true,34,0,3.4);
-   makehist(channel_name+"_muon_eta_tight",true,34,0,3.4);
-   makehist(channel_name+"_elec_eta_tight",true,34,0,3.4);
-   makehist(channel_name+"_muon_eta_medium",true,34,0,3.4);
-   makehist(channel_name+"_elec_eta_medium",true,34,0,3.4);
-   makehist(channel_name+"_muon_eta_loose",true,34,0,3.4);
-   makehist(channel_name+"_elec_eta_loose",true,34,0,3.4);
-   makehist(channel_name+"_pt",true,100,0,1000);
-   makehist(channel_name+"_muon_pt",true,100,0,1000);
-   makehist(channel_name+"_elec_pt",true,100,0,1000);
-   makehist2d(channel_name+"_pt_eta",true,100,0,1000,34,0,3.4);
-   makehist2d(channel_name+"_muon_pt_eta",true,100,0,1000,34,0,3.4);
-   makehist2d(channel_name+"_elec_pt_eta",true,100,0,1000,34,0,3.4);
+   makehist(channel_name+"_muon_eta",true,27,0,2.7);
+   makehist(channel_name+"_elec_eta",true,27,0,2.7);
+   makehist(channel_name+"_muon_eta_tight",true,27,0,2.7);
+   makehist(channel_name+"_elec_eta_tight",true,27,0,2.7);
+   makehist(channel_name+"_muon_eta_medium",true,27,0,2.7);
+   makehist(channel_name+"_elec_eta_medium",true,27,0,2.7);
+   makehist(channel_name+"_muon_eta_loose",true,27,0,2.7);
+   makehist(channel_name+"_elec_eta_loose",true,27,0,2.7);
+   makehist(channel_name+"_pt",true,50,0,500);
+   makehist(channel_name+"_muon_pt",true,50,0,500);
+   makehist(channel_name+"_elec_pt",true,50,0,500);
+   makehist2d(channel_name+"_pt_eta",true,50,0,500,27,0,2.7);
+   makehist(channel_name+"_low_pt_eta",true,27,0,2.7);
+   makehist(channel_name+"_high_pt_eta",true,27,0,2.7);
+   makehist2d(channel_name+"_muon_pt_eta",true,50,0,500,27,0,2.7);
+   makehist2d(channel_name+"_elec_pt_eta",true,50,0,500,27,0,2.7);
 
 }
 void ana::WWZ_fillhist(TString channel_name, float fill_wgt){
@@ -375,6 +377,11 @@ void ana::WWZ_fillhist(TString channel_name, float fill_wgt){
          numTight += 1;
       }
       makehist(channel_name+"_pt")->Fill(v_l_tlv[i].Pt()*0.001, fill_wgt);
+      if (v_l_tlv[i].Pt()*0.001 < 50){
+         makehist(channel_name+"_low_pt_eta")->Fill(v_l_tlv[i].Eta(), fill_wgt);
+      } else {
+         makehist(channel_name+"_high_pt_eta")->Fill(v_l_tlv[i].Eta(), fill_wgt);
+      }
       makehist2d(channel_name+"_pt_eta")->Fill(v_l_tlv[i].Pt()*0.001,v_l_tlv[i].Eta(), fill_wgt);
       if (v_l_pid[i] == 11 || v_l_pid[i] == -11){
          makehist2d(channel_name+"_elec_pt_eta")->Fill(v_l_tlv[i].Pt()*0.001,v_l_tlv[i].Eta(), fill_wgt);
@@ -403,7 +410,7 @@ void ana::WWZ_fillhist(TString channel_name, float fill_wgt){
    }
    makehist(channel_name+"_event_numTight")->Fill(numTight, fill_wgt);
 
-   for (int i=0; i < 34; ++i){
+   for (int i=0; i < 27; ++i){
       numEtaLess = 0;
       for (int j=0; j < 4; ++j){
          if (v_l_tlv[j].Eta() < 0.2*i && v_l_tlv[j].Eta() > (-1)*(0.2*i)){
